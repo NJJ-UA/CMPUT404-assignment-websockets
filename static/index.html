@@ -24,6 +24,10 @@
   </head>
   <body bgcolor="white" height="100%" width="100%">
     <div id="debug"></div>
+    <img hidden id="rainbow" src="rainbow.png" alt="rainbow" width="160" height="160">
+    <img hidden id="hourglass" src="hourglass.png" alt="hourglass" width="160" height="160">
+    <img hidden id="heart" src="heart.png" alt="heart" width="160" height="160">
+
     <canvas id="c" width="100%" height="100%" style="-webkit-tap-highlight-color: transparent;"></canvas>
 
     <script>
@@ -47,15 +51,29 @@ world = {};
 //XXX: TODO Make this prettier!
 function drawCircle(context,entity) {
     with(context) {
-        beginPath();
-        lineWidth = 3;
+        //beginPath();
+        //lineWidth = 3;
         var x = entity["x"];
         var y = entity["y"];
         //moveTo(x,y);
-        fillStyle = entity["colour"];
-        strokeStyle = fillStyle;
-        arc(x, y, (entity["radius"])?entity["radius"]:50, 0, 2.0 * Math.PI, false);
-        stroke();
+        //fillStyle = entity["colour"];
+        //strokeStyle = fillStyle;
+        //arc(x, y, (entity["radius"])?entity["radius"]:50, 0, 2.0 * Math.PI, false);
+        //stroke();
+        var shape=entity["shape"];
+        if (shape=="rainbow"){
+            var img = document.getElementById("rainbow");
+        }else if(shape=="heart"){
+            var img = document.getElementById("heart");
+        }else{
+            var img = document.getElementById("hourglass");
+        }
+
+
+        var l= (entity["radius"])?2*entity["radius"]:20;
+        if(img.complete){
+            drawImage(img, x,y,l,l);
+        }
     }
 }
 
@@ -234,15 +252,15 @@ mouse = (function() {
 // Add the application specific mouse listeners!
 //XXX: TODO Make these prettier!
 mouse.mousedowners.push(function(x,y,clicked,e) {
-    addEntityWithoutName({'x':x,'y':y,'colour':'blue'});
+    addEntityWithoutName({'x':x,'y':y,'shape':'hourglass'});
 });
 
 mouse.mouseuppers.push(function(x,y,clicked,e) {
-    addEntityWithoutName({'x':x,'y':y,'colour':'red'});
+    addEntityWithoutName({'x':x,'y':y,'shape':'heart'});
 });
 
 mouse.mousedraggers.push(function(x,y,clicked,e) {
-    addEntityWithoutName({'x':x,'y':y,'colour':'green',
+    addEntityWithoutName({'x':x,'y':y,'shape':'rainbow',
                           'radius':10});
 });
 
